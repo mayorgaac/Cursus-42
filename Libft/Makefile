@@ -3,7 +3,7 @@ OBJ_DIR = ./objects/
 
 #Declaramos los nombres de los archivos objeto
 OBJECTS = $(addprefix $(OBJ_DIR), $(SOURCES:.c=.o))
-#OBJECTS_BON = $(addprefix $(OBJ_DIR), $(SOURCES_BON:.c=.o)) 
+OBJECTS_BON = $(addprefix $(OBJ_DIR), $(SOURCES_BON:.c=.o)) 
 
 # Indicamos el nombre de nuestro ejecutable
 NAME = libft.a
@@ -45,15 +45,15 @@ SOURCES = 	ft_isalpha.c 	\
 			ft_putnbr_fd.c
 
 #Declaramos la variable con los archivos que componen el bonus
-#SOURCES_BON =	ft_lstnew.c			\
-#				ft_lstadd_front.c	\
-#				ft_lstsize.c		\
-#				ft_lstlast.c		\
-#				ft_lstadd_back.c	\
-#				ft_lstdelone.c		\
-#				ft_lstclear.c		\
-#				ft_lstiter.c		\
-#				ft_lstmap.c			\
+SOURCES_BON =	ft_lstnew.c			\
+				ft_lstadd_front.c	\
+				ft_lstsize.c		\
+				ft_lstlast.c		\
+				ft_lstadd_back.c	\
+				ft_lstdelone.c		\
+				ft_lstclear.c		\
+				ft_lstiter.c		\
+				ft_lstmap.c
 
 #Indicamos cual va a ser nuetro compilador
 CC = gcc
@@ -72,8 +72,8 @@ $(NAME) : $(OBJECTS)
 	ar rcs $(NAME) $(OBJECTS)
 
 #Se compila el bonus
-#bonus: all $(OBJECTS_BON)
-#		ar rcs $(NAME) $(OBJECTS_BON)
+bonus: all $(OBJECTS_BON)
+		ar rcs $(NAME) $(OBJECTS_BON)
 
 #Regla para contruir los archivos objeto
 $(OBJ_DIR)%.o: %.c | $(OBJ_DIR)
@@ -85,17 +85,14 @@ $(OBJ_DIR):
 
 #Borrado de objetos
 clean:
-	$(RM) $(OBJECTS)
-#	$(RM) $(OBJECTS) $(OBJECTS_BON)
+	$(RM) $(OBJECTS) $(OBJECTS_BON)
 
 #Borrado de objetos y del ejecutable
 fclean: clean
 	$(RM) $(NAME)
 
 #Lo borra todo
-re: fclean all
-#re: fclean all bonus
+re: fclean all bonus
 
 #Indicamos que no cree ningun archivo con estos nombres
-.PHONY: all clean fclean re
-#.PHONY: bonus all clean fclean re
+.PHONY: bonus all clean fclean re
