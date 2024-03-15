@@ -31,7 +31,7 @@ SOURCES = 	ft_isalpha.c 	\
 			ft_memcmp.c		\
 			ft_atoi.c		\
 			ft_calloc.c		\
-			ft_strdup.c		\
+			ft_strdup.c		
 #			ft_substr.c		\
 #			ft_strjoin.c	\
 #			ft_strtrim.c	\
@@ -81,7 +81,7 @@ $(OBJ_DIR)%.o: %.c | $(OBJ_DIR)
 
 # Regla para crear la carpeta de objetos si no existe
 $(OBJ_DIR):
-    mkdir -p $(OBJ_DIR)
+	- mkdir -p $(OBJ_DIR)
 
 #Borrado de objetos
 clean:
