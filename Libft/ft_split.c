@@ -12,61 +12,104 @@
 
 #include "libft.h"
 
-static size_t	ft_wordcount(char *s, char c)
+static void	ft_freeup(char *strs)
 {
-	size_t	count;
-	size_t	i;
+	int	i;
 
-	if (!s)
-		return (0);
-	if (!ft_strlen(s))
-		return (0);
 	i = 0;
-	count = s[i] != c;
-	while (s[i])
+	while (strs[i] != '\0')
 	{
-		count += (s[i] == c && s[i + 1] != c && s[i + 1] != '\0');
+		free(strs);
 		i++;
 	}
-	return (count);
+	free(strs);
 }
 
-static int	ft_next_worlen(char const *s, int i, char c)
+static int	ft_wordcount(char *str, char c)
 {
-	int	count;
+	int	i;
+	int	word;
 
-	count = 0;
-	while (s[i])
+	i = 0;
+	word = 0;
+	while (str[i] != '\0')
 	{
-		if (s[i] == c || s[i] == '\0')
-			return (count);
+		if (str[i] != c)
+		{
+			word++;
+			while (str[i] != c && str[i] != '\0')
+				i++;
+			if (str[i] == '\0')
+				return (word);
+		}
 		i++;
-		count++;
 	}
-	return (count);
+	return (word);
 }
 
-char	**ft_split(char const *s, char c)
+static void	ft_strcpy(char *word, char *str, char c, int j)
 {
-	size_t	i;
-	size_t	tab_index;
-	size_t	end;
-	char	**tab;
+	int	i;
 
-	tab = ft_calloc(ft_wordcount((char *)s, c) + 1, sizeof(char *));
-	if (!tab || !s)
+	i = 0;
+	while (str[j] != '\0' && str[j] == c)
+		j++;
+	while (str[j + i] != c && str[j + i] != '\0')
+	{
+		word[i] = str[j + i];
+		i++;
+	}
+	word[i] = '\0';
+}
+
+static char	*ft_stralloc(char *str, char c, int *k)
+{
+	char	*word;
+	int		j;
+
+	j = *k;
+	word = NULL;
+	while (str[*k] != '\0')
+	{
+		if (str[*k] != c)
+		{
+			while (str[*k] != '\0' && str[*k] != c)
+				*k += 1;
+			word = (char *)malloc(sizeof(char) * (*k + 1));
+			if (word == NULL)
+				return (NULL);
+			break ;
+		}
+		*k += 1;
+	}
+	ft_strcpy(word, str, c, j);
+	return (word);
+}
+
+char	**ft_split(char const *str, char c)
+{
+	char	**strs;
+	int		i;
+	int		j;
+	int		pos;
+
+	if (str == NULL)
 		return (NULL);
 	i = 0;
-	tab_index = 0;
-	while (tab_index < ft_wordcount((char *)s, c))
+	pos = 0;
+	j = ft_wordcount((char *)str, c);
+	strs = (char **)malloc(sizeof(char *) * (j + 1));
+	if (strs == NULL)
+		return (NULL);
+	strs[j] = NULL;
+	while (i < j)
 	{
-		while (s[i] == c)
-			i++;
-		end = ft_next_worlen(s, i, c);
-		tab[tab_index] = ft_substr(s, i, end);
-		i += end;
-		tab_index++;
+		strs[i] = ft_stralloc(((char *)str), c, &pos);
+		if (strs[i] == NULL)
+		{
+			ft_freeup(strs[i]);
+		}
 		i++;
 	}
-	return (tab);
+	return (strs);
 }
