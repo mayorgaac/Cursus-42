@@ -17,6 +17,8 @@ int	ft_atoi(const char *str)
 	int	s;
 	int	val;
 
+	if(!str)
+		return(0);
 	s = 1;
 	val = 0;
 	while (*str == ' ' || *str == '\n' || *str == '\t' || *str == '\f'
@@ -33,4 +35,33 @@ int	ft_atoi(const char *str)
 	}
 	val *= s;
 	return (val);
+}
+
+/*#include <stdio.h>
+
+int main()
+{
+	char *str = "123 asdasda";
+	printf("ft_atoi: %d\n", ft_atoi(str));
+	printf("atoi: %d\n", atoi(str));
+
+	str = " asdasda";
+	printf("ft_atoi: %d\n", ft_atoi(str));
+	printf("atoi: %d\n", atoi(str));
+
+	// str = NULL;
+	// printf("ft_atoi: %d\n", ft_atoi(str));
+	// printf("atoi: %d\n", atoi(str));
+
+	str = "-kgkjhk123 asdasda";
+	printf("ft_atoi: %d\n", ft_atoi(str));
+	printf("atoi: %d\n", atoi(str));
+
+	str = "-123 asdasda";
+	printf("ft_atoi: %d\n", ft_atoi(str));
+	printf("atoi: %d\n", atoi(str));
+
+	str = "";
+	printf("ft_atoi: %d\n", ft_atoi(str));
+	printf("atoi: %d\n", atoi(str));*/
 }

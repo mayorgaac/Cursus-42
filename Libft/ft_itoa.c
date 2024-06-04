@@ -60,3 +60,13 @@ char	*ft_itoa(int n)
 	}
 	return (c);
 }
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+	int nb = 12;
+	printf("ft_itoa: %s\n", ft_itoa(nb));
+	printf("itoa: %s\n", itoa(nb));
+}
