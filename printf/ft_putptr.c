@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   write.c                                            :+:      :+:    :+:   */
+/*   ft_putptr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amayorga <amayorga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/19 21:08:43 by amayorga          #+#    #+#             */
-/*   Updated: 2024/03/19 21:14:03 by amayorga         ###   ########.fr       */
+/*   Created: 2024/06/18 18:56:29 by amayorga          #+#    #+#             */
+/*   Updated: 2024/06/18 18:59:57 by amayorga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void ft_putchar(char c)
+void	ft_putptr(void *ptr, int *bytes)
 {
-	write(1, &c, 1);
-}
+	unsigned long long	ptr_num;
 
-void ft_putstr(char *str)
-{
-	while (*str)
-		write(1, (*str)++, 1);
+	if (ptr == 0)
+	{
+		ft_putstr("(nil)", bytes);
+		return ;
+	}
+	ptr_num = (unsigned long long)ptr;
+	ft_putstr("0x", bytes);
+	ft_puthex_ull(ptr_num, "0123456789abcdef", bytes);
 }
