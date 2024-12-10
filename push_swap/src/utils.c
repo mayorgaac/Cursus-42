@@ -18,7 +18,7 @@ void init_stack(t_stack *stack_a, t_stack *stack_b, int *nums, int size)
 {
     int i;
     t_node *tmp;
-    
+
     stack_a->head = NULL;
     stack_a->size = 0;
     stack_b->head = NULL;
@@ -57,7 +57,7 @@ void init_sort(int *nums, int size)
 
         }
         nums[j + 1] = number;
-        i++;        
+        i++;
     }
 }
 
@@ -69,4 +69,17 @@ int get_index(int *nums, int num)
     while(nums[i] != num)
         i++;
     return (i);
+}
+
+int find_min(t_stack *a)
+{
+  t_node *current;
+
+  current = a->head;
+  while(current)
+  {
+    if(current->index == 0)
+      return (current->data);
+    current = current->next;
+  }
 }

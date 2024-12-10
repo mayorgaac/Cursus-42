@@ -23,17 +23,17 @@ int main(int argc, char **argv)
     if(!stack_a)
         return (-1);
     stack_b = (t_stack *)ft_calloc(1, sizeof(t_stack *));
-    if(!stack_b)    
+    if(!stack_b)
         return (-1);
     if(argc < 2)
     {
         ft_printf(RED"ERROR\n");
         return (-1);
     }
-        
+
 
     //Paso 1: Checkear input
-    nums = check_args(argc, argv, &size); 
+    nums = check_args(argc, argv, &size);
     if(!nums)
     {
         ft_printf(RED"ERROR\n");
@@ -49,14 +49,12 @@ int main(int argc, char **argv)
         return (-1);
     }
     init_stack(stack_a, stack_b, nums, size);
+    if(is_ordered(stack_a))
+      return (0);
     print_stack(stack_a);
-  
+
     //Paso 3: Ordenar numeros
 
-
-    //Radix algorithm
-    //Ksort algorithm -- use this
-    
     return (0);
 
 }

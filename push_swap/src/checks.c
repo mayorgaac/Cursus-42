@@ -40,7 +40,7 @@ int check_range(char *s_num)
 
 int *parse(char **args, int size)
 {
-    int c; 
+    int c;
     int i;
     int k;
     char **tmp_args;
@@ -61,7 +61,7 @@ int *parse(char **args, int size)
                 return (NULL);
             numbers[k++] = ft_atoi(tmp_args[i++]);
         }
-            
+
         c++;
     }
     return (numbers);
@@ -81,7 +81,7 @@ int *check_args(int argc, char **argv, int *size)
         i++;
     }
     numbers = parse(argv, *size);
-    
+
     return (numbers);
 }
 
@@ -103,4 +103,21 @@ int is_duplicate(int *args, int count)
         i++;
     }
     return (0);
+}
+
+int is_ordered(t_stack *stack)
+{
+  t_node *node;
+  int current_num;
+
+  node = stack->head->next;
+  current_num = stack->head->data;
+  while(node)
+  {
+    if(node->data < current_num)
+      return (0);
+    current_num = node->data;
+    node = node->next;
+  }
+  return (1);
 }
