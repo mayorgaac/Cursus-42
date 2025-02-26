@@ -14,6 +14,7 @@ void load_images(t_game *game)
   if(!game->img_wall || !game->img_floor || !game->img_collect || !game->img_player_up || !game->img_player_down || !game->img_player_right || !game->img_player_left || !game->img_exit)
   {
     ft_printf("ERROR: No se puedieron cargar las imagenes.\n");
+    free_images(game);
     exit(1);
   }
 }
@@ -28,6 +29,7 @@ void draw_map(t_game *game)
     ft_printf("GAME NULL");
     return;
   }
+  game->colleccionables = 0;
   y = 0;
   while(game->map_file[y])
   {
@@ -62,6 +64,30 @@ void draw_map(t_game *game)
   }
 }
 
+void init_game(t_game *game)
+{
+    game->mlx = NULL;
+    game->win = NULL;
+    game->img_wall = NULL;
+    game->img_floor = NULL;
+    game->img_collect = NULL;
+    game->img_player_up = NULL;
+    game->img_player_down = NULL;
+    game->img_player_right = NULL;
+    game->img_player_left = NULL;
+    game->img_exit = NULL;
+    game->img_width = 0;
+    game->img_height = 0;
+    game->width = 0;
+    game->height = 0;
+    game->map_file = NULL;
+    game->player_x = 0;
+    game->player_y = 0;
+    game->colleccionables = 0;
+    game->final_x = 0;
+    game->final_y = 0;
+}
+
 char **read_map_from_file(char *filename)
 {
     int fd;
@@ -78,12 +104,14 @@ char **read_map_from_file(char *filename)
 
     char **map = malloc(sizeof(char *) * (num_lines + 1)); // Suponiendo que el mapa no tiene más de 100 líneas
     if (!map)
+    {
+      close(fd);
         return NULL;
-
+    }
     int i = 0;
     while ((line = get_next_line(fd))) // Lee línea por línea
     {
-      line = remove_newline(line);
+      remove_newline(line);
       map[i] = ft_strdup(line);
       free(line);
       if(!map[i])
@@ -106,6 +134,7 @@ int read_lines_of_file(char *filename)
 {
   int lines;
   int fd;
+  char *line;
 
   lines = 0;
   fd = open(filename, O_RDONLY);
@@ -114,18 +143,25 @@ int read_lines_of_file(char *filename)
       ft_printf("Error: No se pudo abrir el archivo %s\n", filename);
       return 0;
   }
-  while(get_next_line(fd))
+  while((line = get_next_line(fd)))
+  {
     lines++;
+    free(line);
+  }
   close(fd);
   return (lines);
 }
 
 char *remove_newline(char *line)
 {
-    int len = 0;
+    int len;
+
+    len = 0;
+    if(!line)
+      return (NULL);
     while (line[len])
-        len++;
+      len++;
     if (len > 0 && line[len - 1] == '\n')
-        line[len - 1] = '\0';
+      line[len - 1] = '\0';
     return line;
 }

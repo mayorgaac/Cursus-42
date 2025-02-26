@@ -29,28 +29,28 @@ void calculate_size(t_game *game)
   game->height = height;
 }
 
-char **map_copy(char **map, int height)
-{
-  char **map_copy;
-    int i;
-
-    map_copy = malloc(sizeof(char *) * (height + 1));
-    if (!map_copy)
-        return (NULL);
-
-    i = 0;
-    while (map[i])
-    {
-        map_copy[i] = ft_strdup(map[i]);
-        if (!map_copy[i])
-        {
-            while (i--)
-                free(map_copy[i]);
-            free(map_copy);
-            return (NULL);
-        }
-        i++;
-    }
-    map_copy[i] = NULL;
-    return map_copy;
-}
+// char **map_copy(char **map, int height)
+// {
+//   char **map_copy;
+//     int i;
+//
+//     map_copy = malloc(sizeof(char *) * (height + 1));
+//     if (!map_copy)
+//         return (NULL);
+//
+//     i = 0;
+//     while (map[i])
+//     {
+//         map_copy[i] = ft_strdup(map[i]);
+//         if (!map_copy[i])
+//         {
+//             while (i--)
+//                 free(map_copy[i]);
+//             free(map_copy);
+//             return (NULL);
+//         }
+//         i++;
+//     }
+//     map_copy[i] = NULL;
+//     return map_copy;
+// }

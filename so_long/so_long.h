@@ -40,6 +40,7 @@
   //mapa.c
   void draw_map(t_game *game);
   void load_images(t_game *game);
+  void init_game(t_game *game);
   char **read_map_from_file(char *filename);
   int read_lines_of_file(char *filename);
   char *remove_newline(char *line);
@@ -53,7 +54,6 @@
   int check_reachability(char **map, int width, int height);
   void search_initial_point(char **map, int *start_y, int *start_x);
   void flood_fill(char **map, int x, int y, int width, int height);
-  void free_array(char **map);
   //print.c
   void print_map(char **map);
   void print_map_debug(char **map);
@@ -63,7 +63,9 @@
   int exit_game(t_game *game);
   void move_player(t_game *game, int dx, int dy, char move);
   void render_map(t_game *game, char move);
-
+  //frees.c
+  void free_map(char **map);
+  void free_images(t_game *game);
 
 
 #endif

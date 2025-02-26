@@ -3,7 +3,7 @@
 int handle_key(int key, t_game *game)
 {
   if(key == 65307) // Tecla ESC para salir
-    exit_game(game);
+    return (exit_game(game));
   else if (key == 119 || key == 65362) // 'W' → Mover arriba
     move_player(game, 0, -1, 'u');
   else if (key == 115 || key == 65364) // 'S' → Mover abajo
@@ -18,17 +18,19 @@ int handle_key(int key, t_game *game)
 int exit_game(t_game *game)
 {
   if(game->map_file)
-    free_array(game->map_file);
+    free_map(game->map_file);
   if(game->img_player_up)
     mlx_destroy_image(game->mlx, game->img_player_up);
   if(game->img_player_down)
     mlx_destroy_image(game->mlx, game->img_player_down);
   if(game->img_player_right)
     mlx_destroy_image(game->mlx, game->img_player_right);
-  if(game->img_player_down)
-    mlx_destroy_image(game->mlx, game->img_player_down);
+  if(game->img_player_left)
+    mlx_destroy_image(game->mlx, game->img_player_left);
   if (game->img_wall)
     mlx_destroy_image(game->mlx, game->img_wall);
+  if (game->img_floor)
+    mlx_destroy_image(game->mlx, game->img_floor);
   if (game->img_collect)
     mlx_destroy_image(game->mlx, game->img_collect);
   if (game->img_exit)
@@ -53,25 +55,21 @@ void move_player(t_game *game, int dx, int dy, char move)
 {
   int new_x;
   int new_y;
-  char **copy_map;
-
-  copy_map = map_copy(game->map_file, game->height);
+  
   new_x = game->player_x + dx;
   new_y = game->player_y + dy;
-  if(copy_map[new_y][new_x] == '1' || new_x < 0 || new_x >= game->width || new_y < 0 || new_y >= game->height)
+  if(game->map_file[new_y][new_x] == '1' || new_x < 0 || new_x >= game->width || new_y < 0 || new_y >= game->height)
     return;
-  if(copy_map[new_y][new_x] == 'C')
+  if(game->map_file[new_y][new_x] == 'C')
     game->colleccionables--;
-  if(copy_map[new_y][new_x] == 'E' && game->colleccionables == 0)
+  if(game->map_file[new_y][new_x] == 'E' && game->colleccionables == 0)
     exit_game(game);
-  else if(copy_map[new_y][new_x] == 'E' && game->colleccionables > 0)
+  else if(game->map_file[new_y][new_x] == 'E' && game->colleccionables > 0)
     return;
-  copy_map[game->player_y][game->player_x] = '0';
-  copy_map[new_y][new_x] = 'P';
+  game->map_file[game->player_y][game->player_x] = '0';
+  game->map_file[new_y][new_x] = 'P';
   game->player_x = new_x;
   game->player_y = new_y;
-  game->map_file = copy_map;
-  //free_array(copy_map);
   render_map(game, move);
 }
 

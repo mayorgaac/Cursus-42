@@ -2,7 +2,7 @@
 
 int check_map(char **map, int *width, int *height)
 {
-  if(!check_caracters(map) || !check_rectangular(map, *width, *height) /*|| !check_reachability(map, *width, *height)*/)
+  if(!check_caracters(map) || !check_rectangular(map, *width, *height) || !check_reachability(map, *width, *height))
     return (0);
   return (1);
 }
@@ -83,7 +83,9 @@ int check_reachability(char **map, int width, int height)
     map_copy[i] = ft_strdup(map[i]);
     if(!map_copy[i])
     {
-      free_array(map_copy);
+      while (--i >= 0)
+        free(map_copy[i]);
+      free(map_copy);
       return (0);
     }
     i++;
@@ -100,7 +102,7 @@ int check_reachability(char **map, int width, int height)
       if(map_copy[i][x] == 'C' || map_copy[i][x] == 'E')
       {
         ft_printf("No se puede alcanzar C o E en la línea %d, columna %d\n", i, x);
-        free_array(map_copy);
+        free_map(map_copy);
         return (0);
       }
       x++;
@@ -108,7 +110,7 @@ int check_reachability(char **map, int width, int height)
     i++;
   }
   ft_printf("LLEGO AQUI\n");
-  free_array(map_copy);
+  free_map(map_copy);
    return(1);
 }
 
@@ -155,18 +157,4 @@ void flood_fill(char **map, int x, int y, int width, int height)
   flood_fill(map, x - 1, y, width, height);
   flood_fill(map, x, y + 1, width, height);
   flood_fill(map, x, y - 1, width, height);
-}
-
-void free_array(char **map)
-{
-  int i;
-
-  i = 0;
-  while(map[i])
-  {
-    free(map[i]);
-    i++;
-  }
-  free(map);
-  map = NULL;
 }

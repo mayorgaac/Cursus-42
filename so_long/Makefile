@@ -3,7 +3,7 @@ NAME = so_long
 RM = rm -rf
 
 CC = cc
-FLAGS = -Wall -Werror -Wextra -Iminilibx
+FLAGS = -Wall -Werror -Wextra -g -Iminilibx
 
 SRC_DIR = src
 SRC = $(wildcard ${SRC_DIR}/*.c)
