@@ -2,8 +2,12 @@
   #define SO_LONG_H
 
   #include "mlx.h"
+  #include "libft/libft.h"
+  #include "libft/printf/ft_printf.h"
   #include <stdio.h>
   #include <stdlib.h>
+  #include <unistd.h>
+  #include <fcntl.h>
   #include <string.h> //ELIMINAR ESTE INCLUDE
 
   #define WIDTH 800
@@ -16,7 +20,10 @@
     void *img_wall;
     void *img_floor;
     void *img_collect;
-    void *img_player;
+    void *img_player_up;
+    void *img_player_down;
+    void *img_player_right;
+    void *img_player_left;
     void *img_exit;
     int img_width;
     int img_height;
@@ -33,8 +40,12 @@
   //mapa.c
   void draw_map(t_game *game);
   void load_images(t_game *game);
+  char **read_map_from_file(char *filename);
+  int read_lines_of_file(char *filename);
+  char *remove_newline(char *line);
   //util.c
-  void calculate_size(char **map_file, int *width, int *height);
+  void calculate_size(t_game *game);
+  char **map_copy(char **map, int height);
   //check.c
   int check_map(char **map, int *width, int *height);
   int check_caracters(char **map);
@@ -44,13 +55,14 @@
   void flood_fill(char **map, int x, int y, int width, int height);
   void free_array(char **map);
   //print.c
-  void print_game(char **map);
+  void print_map(char **map);
+  void print_map_debug(char **map);
   //game_control.c
   int handle_key(int key, t_game *game);
   void setup_hooks(t_game *game);
-  void exit_game(t_game *game);
-  void move_player(t_game *game, int dx, int dy);
-  void render_map(t_game *game);
+  int exit_game(t_game *game);
+  void move_player(t_game *game, int dx, int dy, char move);
+  void render_map(t_game *game, char move);
 
 
 

@@ -2,8 +2,7 @@
 
 int check_map(char **map, int *width, int *height)
 {
-  print_map(map);
-  if(!check_caracters(map) || !check_rectangular(map, *width, *height) || !check_reachability(map, *width, *height))
+  if(!check_caracters(map) || !check_rectangular(map, *width, *height) /*|| !check_reachability(map, *width, *height)*/)
     return (0);
   return (1);
 }
@@ -75,26 +74,32 @@ int check_reachability(char **map, int width, int height)
   int x;
 
   search_initial_point(map, &start_y, &start_x);
-  map_copy = malloc(height * (sizeof(char *) + 1));
+  map_copy = malloc(height * (sizeof(char *)));
+  if(!map_copy)
+    return (0);
   i = 0;
   while(i < height)
   {
-    map_copy[i] = strdup(map[i]); //USAR PROPIO FT_STRDUP
+    map_copy[i] = ft_strdup(map[i]);
+    if(!map_copy[i])
+    {
+      free_array(map_copy);
+      return (0);
+    }
     i++;
   }
-  printf("start_x: %d; start_y: %d\n", start_x, start_y);
-  printf("width: %d; height: %d\n", width, height);
   flood_fill(map_copy, start_x, start_y, width, height);
-  print_map(map_copy);
+  print_map_debug(map_copy);
   i = 0;
   while(map_copy[i])
   {
     x = 0;
     while(map_copy[i][x])
     {
-      printf("X: %d, Y:%d\n", x, i);
+      ft_printf("Verificando mapa: x = %d, i = %d, valor = %c\n", x, i, map_copy[i][x]);
       if(map_copy[i][x] == 'C' || map_copy[i][x] == 'E')
       {
+        ft_printf("No se puede alcanzar C o E en la línea %d, columna %d\n", i, x);
         free_array(map_copy);
         return (0);
       }
@@ -102,8 +107,9 @@ int check_reachability(char **map, int width, int height)
     }
     i++;
   }
+  ft_printf("LLEGO AQUI\n");
   free_array(map_copy);
-  return(1);
+   return(1);
 }
 
 void search_initial_point(char **map, int *start_y, int *start_x)
@@ -133,13 +139,18 @@ void search_initial_point(char **map, int *start_y, int *start_x)
 
 void flood_fill(char **map, int x, int y, int width, int height)
 {
-  if(x < 0 || y < 0 || x > width || y > height)
+  if(x < 0 || y < 0 || x >= width || y >= height)
+  {
+    ft_printf("Out of bounds: x = %d, y = %d\n", x, y);
     return;
-  if(x == width || y == height)
-    map[y][x] = '\0';
+  }
   if(map[y][x] == '1' || map[y][x] == 'F' || map[y][x] == '\0')
+  {
+    ft_printf("Blocked: x = %d, y = %d, value = %c\n", x, y, map[y][x]);
     return;
+  }
   map[y][x] = 'F';
+  ft_printf("Flood filling: x = %d, y = %d, value = F\n", x, y);
   flood_fill(map, x + 1, y, width, height);
   flood_fill(map, x - 1, y, width, height);
   flood_fill(map, x, y + 1, width, height);
@@ -157,4 +168,5 @@ void free_array(char **map)
     i++;
   }
   free(map);
+  map = NULL;
 }
