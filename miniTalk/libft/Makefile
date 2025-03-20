@@ -13,8 +13,8 @@ OBJ_DIR = obj
 
 INCLUDE = libft.h
 
-PRINTF_DIR = ./ft_printf
-PRINTF_LIB = $(PRINTF_DIR)/libftprintf.a
+PRINTF_DIR = ./printf
+PRINTF_LIB = $(PRINTF_DIR)/printf.a
 
 all: $(NAME)
 

@@ -14,6 +14,8 @@ OBJ_SERVER = $(SRC_SERVER:${DIR_SERVER}/%.c=${OBG_DIR_SERVER}/%.o)
 
 INCLUDE = minitalk.h
 
+OBJ_DIR = obj
+
 #Bonus
 NAME_CLIENT_BONUS = client_bonus
 NAME_SERVER_BONUS = server_bonus
@@ -71,12 +73,12 @@ bonus: ${NAME_CLIENT_BONUS} ${NAME_SERVER_BONUS}
 ${NAME_CLIENT_BONUS} : ${OBJ_CLIENT_BONUS}
 	@${MAKE} -C ${LIBFT_DIR}
 	@${MAKE} -C ${PRINTF_DIR}
-	@${CC} ${FLAGS} ${OBJ_CLIENT_BONUS} ${LIBFT_LIB} ${PRINTF_LIB} -o ${NAME_CLIENT_BONUS}
+	@${CC} ${FLAGS} ${OBJ_CLIENT_BONUS} ${LIBFT_LIB} -o ${NAME_CLIENT_BONUS}
 
 ${NAME_SERVER_BONUS} : ${OBJ_SERVER_BONUS}
 	@${MAKE} -C ${LIBFT_DIR}
 	@${MAKE} -C ${PRINTF_DIR}
-	@${CC} ${FLAGS} ${OBJ_SERVER_BONUS} ${LIBFT_LIB} ${PRINTF_LIB} -o ${NAME_SERVER_BONUS}
+	@${CC} ${FLAGS} ${OBJ_SERVER_BONUS} ${LIBFT_LIB} -o ${NAME_SERVER_BONUS}
 
 $(OBG_DIR_CLIENT_BONUS)/%.o: ${DIR_CLIENT_BONUS}/%.c | $(OBG_DIR_CLIENT_BONUS)
 	$(CC) $(FLAGS) -c -o $@ $<
@@ -91,15 +93,16 @@ $(OBG_DIR_SERVER_BONUS):
 	mkdir -p $(OBG_DIR_SERVER_BONUS)
 
 clean:
-	make clean -C ft_printf
-	make clean -C libft
+	make clean -C $(PRINTF_DIR)
+	make clean -C $(LIBFT_DIR)
+	rm -rf $(OBJ_DIR)
 	@printf "\e[38;5;46m💥 .o files deleted\e[0m\n"
 
 fclean:
-	make fclean -C ${PRINTF_DIR}
+	make clean -C $(PRINTF_DIR)
 	make fclean -C ${LIBFT_DIR}
-	rm -f $(NAME_CLIENT) $(NAME_SERVER)
-	rm -f $(NAMES_B) $(NAMEC_B)
+	rm -rf $(OBJ_DIR)
+	rm -f $(NAME_CLIENT) $(NAME_SERVER) $(NAME_CLIENT_BONUS) $(NAME_SERVER_BONUS)
 	@printf "\e[38;5;226m🧹 Binaries and .o deleted\e[0m\n"
 
 re:	fclean all

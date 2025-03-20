@@ -16,7 +16,7 @@ RM = rm -rf
 CC = gcc
 FLAGS = -Wall -Werror -Wextra -g
 
-NAME = libftprintf.a
+NAME = printf.a
 SRC = $(wildcard ./*.c)
 
 OBJ_DIR = obj
