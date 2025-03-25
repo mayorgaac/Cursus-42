@@ -1,53 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   utils_v3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amayorga <amayorga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/28 19:25:40 by amayorga          #+#    #+#             */
-/*   Updated: 2025/03/04 20:32:48 by amayorga         ###   ########.fr       */
+/*   Created: 2025/03/05 16:18:05 by amayorga          #+#    #+#             */
+/*   Updated: 2025/03/10 19:36:46 by amayorga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
 
-void	print_stack(t_stack *stack, char *name)
-{
-	t_node	*tmp;
-
-	tmp = stack->head;
-	if (tmp)
-		ft_printf("%s: [%d,", name, tmp->data);
-	while (tmp)
-	{
-		tmp = tmp->next;
-		if (tmp)
-			ft_printf("%d,", tmp->data);
-	}
-	ft_printf("]\n");
-}
-
-void	print_array(int *nums, int size)
+int	is_duplicate(char **args, int count)
 {
 	int	i;
+	int	j;
 
 	i = 0;
-	while (i < size)
+	while (i < count)
 	{
-		ft_printf("Num: %d\n", nums[i]);
+		j = i + 1;
+		while (j < count)
+		{
+			if (ft_strncmp(args[i], args[j], 100) == 0)
+				return (1);
+			j++;
+		}
 		i++;
 	}
+	return (0);
 }
 
-void	print_args(char **args)
+int	get_max_bits(t_stack *a)
 {
-	int	i;
+	int		max;
+	int		bits;
+	t_node	*current;
 
-	i = 0;
-	while (args[i])
+	max = a->head->index;
+	current = a->head;
+	while (current)
 	{
-		ft_printf("Arg: %s\n", args[i]);
-		i++;
+		if (current->index > max)
+			max = current->index;
+		current = current->next;
 	}
+	bits = 0;
+	while ((max >> bits) != 0)
+		bits++;
+	return (bits);
 }

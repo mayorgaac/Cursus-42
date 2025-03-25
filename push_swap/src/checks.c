@@ -6,118 +6,112 @@
 /*   By: amayorga <amayorga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 19:25:49 by amayorga          #+#    #+#             */
-/*   Updated: 2024/11/28 19:25:58 by amayorga         ###   ########.fr       */
+/*   Updated: 2025/03/12 21:08:48 by amayorga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
 
-int check_digits(char *arg, int *size)
+int	check(int argc, char ***nums, char **argv, int *size)
 {
-    int i;
-
-    i = 0;
-    (*size) += ft_count_words(arg, ' ');
-    while(i < ft_strlen(arg))
-        {
-            if(arg[i] != ' ' && !ft_isdigit(arg[i]) && arg[i] != '-' && arg[i] != '+' && arg[i] != '\0')
-                return (0);
-            i++;
-        }
-    return (1);
-
+	*size = 0;
+	if (!check_digits(argc, argv, size))
+	{
+		ft_printf(RED"ERROR\n");
+		return (-1);
+	}
+	if (argc <= 2)
+		return (-1);
+	*nums = check_args(argv, size);
+	if (!(*nums))
+	{
+		ft_printf(RED"ERROR\n");
+		return (-1);
+	}
+	if ((*size) <= 1 || is_duplicate((*nums), (*size)))
+	{
+		ft_free(*nums);
+		ft_printf(RED"ERROR\n");
+		return (-1);
+	}
+	return (0);
 }
 
-int check_range(char *s_num)
+int	check_digits(int argc, char **arg, int *size)
 {
-    long num;
+	int	i;
+	int	j;
 
-    num = ft_atol(s_num);
-    if(num > INT_MAX || num < INT_MIN)
-        return (0);
-    return (1);
+	i = 1;
+	j = 0;
+	while (i < argc)
+	{
+		(*size) += ft_count_words(arg[i], ' ');
+		while (j < ft_strlen(arg[i]))
+		{
+			if (arg[i][j] != ' '
+				&& arg[i][j] != '\n'
+				&& !ft_isdigit(arg[i][j])
+				&& arg[i][j] != '-'
+				&& arg[i][j] != '+'
+				&& arg[i][j] != '\0')
+				return (0);
+			j++;
+		}
+		i++;
+	}
+	return (1);
 }
 
-int *parse(char **args, int size)
+int	check_range(char *s_num)
 {
-    int c;
-    int i;
-    int k;
-    char **tmp_args;
-    int *numbers;
+	long	num;
 
-    c = 1;
-    k = 0;
-    numbers = (int *)ft_calloc((size) + 1, sizeof(int));
-    if(numbers == NULL)
-        return (NULL);
-    while(args[c])
-    {
-        tmp_args = ft_split(args[c], ' ');
-        i = 0;
-        while(tmp_args[i])
-        {
-            if(!check_range(tmp_args[i]))
-                return (NULL);
-            numbers[k++] = ft_atoi(tmp_args[i++]);
-        }
-
-        c++;
-    }
-    return (numbers);
+	num = ft_atol(s_num);
+	if (ft_strncmp(s_num, "0", 1) == 0)
+		return (1);
+	if (num == 0)
+		return (0);
+	if (num > INT_MAX || num < INT_MIN)
+		return (0);
+	return (1);
 }
 
-int *check_args(int argc, char **argv, int *size)
+char	**parse(char **args, char **numbers)
 {
-    int i;
-    int *numbers;
+	int		c;
+	int		i;
+	int		k;
+	char	**tmp_args;
 
-    i = 1;
-    *size = 0;
-    while(i < argc)
-    {
-        if(!check_digits(argv[i], size))
-            return (NULL);
-        i++;
-    }
-    numbers = parse(argv, *size);
-
-    return (numbers);
+	c = 1;
+	k = 0;
+	while (args[c])
+	{
+		tmp_args = ft_split(args[c], ' ');
+		if (!tmp_args)
+			return (ft_free(numbers), NULL);
+		i = 0;
+		while (tmp_args[i])
+		{
+			if (!check_range(tmp_args[i]))
+				return (ft_free(tmp_args), ft_free(numbers), NULL);
+			numbers[k++] = ft_strdup(tmp_args[i++]);
+		}
+		ft_free(tmp_args);
+		c++;
+	}
+	return (numbers);
 }
 
-int is_duplicate(int *args, int count)
+char	**check_args(char **argv, int *size)
 {
-    int i;
-    int j;
+	char	**numbers;
 
-    i = 0;
-    while(i < count)
-    {
-        j = i + 1;
-        while(j < count)
-        {
-            if(args[i] == args[j])
-                return (1);
-            j++;
-        }
-        i++;
-    }
-    return (0);
-}
-
-int is_ordered(t_stack *stack)
-{
-  t_node *node;
-  int current_num;
-
-  node = stack->head->next;
-  current_num = stack->head->data;
-  while(node)
-  {
-    if(node->data < current_num)
-      return (0);
-    current_num = node->data;
-    node = node->next;
-  }
-  return (1);
+	numbers = (char **)ft_calloc((*size) + 1, sizeof(char *));
+	if (numbers == NULL)
+		return (NULL);
+	if (parse(argv, numbers) == NULL)
+		return (NULL);
+	return (numbers);
 }
