@@ -16,22 +16,6 @@ INCLUDE = minitalk.h
 
 OBJ_DIR = obj
 
-#Bonus
-NAME_CLIENT_BONUS = client_bonus
-NAME_SERVER_BONUS = server_bonus
-
-DIR_CLIENT_BONUS = src_bonus/client
-SRC_CLIENT_BONUS = $(wildcard ${DIR_CLIENT_BONUS}/*.c)
-OBG_DIR_CLIENT_BONUS = obj_bonus/client
-OBJ_CLIENT_BONUS = $(SRC_CLIENT_BONUS:${DIR_CLIENT_BONUS}/%.c=${OBG_DIR_CLIENT_BONUS}/%.o)
-
-DIR_SERVER_BONUS = src_bonus/server
-SRC_SERVER_BONUS = $(wildcard ${DIR_SERVER_BONUS}/*.c)
-OBG_DIR_SERVER_BONUS = obj_bonus/server
-OBJ_SERVER_BONUS = $(SRC_SERVER_BONUS:${DIR_SERVER_BONUS}/%.c=${OBG_DIR_SERVER_BONUS}/%.o)
-
-INCLUDE_BONUS = minitalk_bonus.h
-
 CC = cc
 FLAGS = -Wall -Werror -Wextra -g
 
@@ -68,30 +52,6 @@ $(OBG_DIR_CLIENT):
 $(OBG_DIR_SERVER):
 	mkdir -p $(OBG_DIR_SERVER)
 
-bonus: ${NAME_CLIENT_BONUS} ${NAME_SERVER_BONUS}
-
-${NAME_CLIENT_BONUS} : ${OBJ_CLIENT_BONUS}
-	@${MAKE} -C ${LIBFT_DIR}
-	@${MAKE} -C ${PRINTF_DIR}
-	@${CC} ${FLAGS} ${OBJ_CLIENT_BONUS} ${LIBFT_LIB} -o ${NAME_CLIENT_BONUS}
-
-${NAME_SERVER_BONUS} : ${OBJ_SERVER_BONUS}
-	@${MAKE} -C ${LIBFT_DIR}
-	@${MAKE} -C ${PRINTF_DIR}
-	@${CC} ${FLAGS} ${OBJ_SERVER_BONUS} ${LIBFT_LIB} -o ${NAME_SERVER_BONUS}
-
-$(OBG_DIR_CLIENT_BONUS)/%.o: ${DIR_CLIENT_BONUS}/%.c | $(OBG_DIR_CLIENT_BONUS)
-	$(CC) $(FLAGS) -c -o $@ $<
-
-$(OBG_DIR_SERVER_BONUS)/%.o: ${DIR_SERVER_BONUS}/%.c | $(OBG_DIR_SERVER_BONUS)
-	$(CC) $(FLAGS) -c -o $@ $<
-
-$(OBG_DIR_CLIENT_BONUS):
-	mkdir -p $(OBG_DIR_CLIENT_BONUS)
-
-$(OBG_DIR_SERVER_BONUS):
-	mkdir -p $(OBG_DIR_SERVER_BONUS)
-
 clean:
 	make clean -C $(PRINTF_DIR)
 	make clean -C $(LIBFT_DIR)
@@ -102,7 +62,7 @@ fclean:
 	make clean -C $(PRINTF_DIR)
 	make fclean -C ${LIBFT_DIR}
 	rm -rf $(OBJ_DIR)
-	rm -f $(NAME_CLIENT) $(NAME_SERVER) $(NAME_CLIENT_BONUS) $(NAME_SERVER_BONUS)
+	rm -f $(NAME_CLIENT) $(NAME_SERVER)
 	@printf "\e[38;5;226m🧹 Binaries and .o deleted\e[0m\n"
 
 re:	fclean all
