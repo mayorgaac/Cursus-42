@@ -46,7 +46,7 @@ int check_rectangular(char **map, int width, int height)
   x = 0;
   while(x < width)
   {
-    if(map[0][x] != '1' && map[height - 1][x] != '1')
+    if(map[0][x] != '1' || map[height - 1][x] != '1')
       return(0);
     x++;
   }
@@ -58,7 +58,7 @@ int check_rectangular(char **map, int width, int height)
       current_width++;
     if(current_width != width)
       return(0);
-    if(map[y][0] != '1' && map[y][width - 1] != '1')
+    if(map[y][0] != '1' || map[y][width - 1] != '1')
       return(0);
     y++;
   }
@@ -67,29 +67,18 @@ int check_rectangular(char **map, int width, int height)
 
 int check_reachability(char **map, int width, int height)
 {
-  int start_x;
-  int start_y;
-  char **map_copy;
-  int i;
-  int x;
+	int start_x;
+	int start_y;
+	char **map_copy;
+	int i;
+	int x;
 
-  search_initial_point(map, &start_y, &start_x);
-  map_copy = malloc(height * (sizeof(char *)));
-  if(!map_copy)
-    return (0);
-  i = 0;
-  while(i < height)
-  {
-    map_copy[i] = ft_strdup(map[i]);
-    if(!map_copy[i])
-    {
-      while (--i >= 0)
-        free(map_copy[i]);
-      free(map_copy);
-      return (0);
-    }
-    i++;
-  }
+	start_x = 0;
+	start_y = 0;
+	search_initial_point(map, &start_y, &start_x);
+	map_copy = copy_map(map, height);
+	if(!map_copy)
+		return (0);
   flood_fill(map_copy, start_x, start_y, width, height);
   print_map_debug(map_copy);
   i = 0;
@@ -109,7 +98,6 @@ int check_reachability(char **map, int width, int height)
     }
     i++;
   }
-  ft_printf("LLEGO AQUI\n");
   free_map(map_copy);
    return(1);
 }
@@ -141,7 +129,7 @@ void search_initial_point(char **map, int *start_y, int *start_x)
 
 void flood_fill(char **map, int x, int y, int width, int height)
 {
-  if(x < 0 || y < 0 || x >= width || y >= height)
+  if(!map || x < 0 || y < 0 || x >= width || y >= height)
   {
     ft_printf("Out of bounds: x = %d, y = %d\n", x, y);
     return;

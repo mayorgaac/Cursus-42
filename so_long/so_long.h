@@ -38,15 +38,18 @@
   } t_game;
 
   //mapa.c
-  void draw_map(t_game *game);
   void load_images(t_game *game);
-  void init_game(t_game *game);
+  void *select_image(t_game *game, char tile, int x, int y);
+  void draw_map(t_game *game);
+  void init_data_game(t_game *game);
+  char	**allocate_map(int fd, int num_lines);
+  int	fill_map(int fd, char **map);
   char **read_map_from_file(char *filename);
   int read_lines_of_file(char *filename);
-  char *remove_newline(char *line);
+  void remove_newline(char *line);
   //util.c
   void calculate_size(t_game *game);
-  char **map_copy(char **map, int height);
+  char **copy_map(char **map, int height);
   //check.c
   int check_map(char **map, int *width, int *height);
   int check_caracters(char **map);
@@ -66,6 +69,10 @@
   //frees.c
   void free_map(char **map);
   void free_images(t_game *game);
+  //init.c
+  int	check_args(int argc);
+  int	load_game(t_game **game, char *map_path);
+  int	init_window(t_game *game);
 
 
 #endif

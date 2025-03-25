@@ -42,7 +42,8 @@ int exit_game(t_game *game)
     mlx_destroy_display(game->mlx);
     free(game->mlx);
   }
-  return (0);
+  free(game);
+  exit(0);
 }
 
 void setup_hooks(t_game *game)

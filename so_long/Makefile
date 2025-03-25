@@ -8,7 +8,7 @@ FLAGS = -Wall -Werror -Wextra -g -Iminilibx
 SRC_DIR = src
 SRC = $(wildcard ${SRC_DIR}/*.c)
 
-OBG_DIR = obj
+OBJ_DIR = obj
 OBJ = $(SRC:${SRC_DIR}/%.c=${OBJ_DIR}/%.o)
 
 INCLUDE = so_long.h
@@ -22,8 +22,6 @@ LIBFT_LIB = ${LIBFT_DIR}/libft.a
 
 PRINTF_DIR = libft/printf
 PRINTF_LIB = ${PRINTF_DIR}/printf.a
-#INCLUIR ft_printf
-#INCLUIR get_next_line
 
 all:$(MLX_LIB) $(NAME)
 
