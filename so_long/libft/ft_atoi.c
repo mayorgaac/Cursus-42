@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amayorga <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amayorga <amayorga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 20:59:25 by amayorga          #+#    #+#             */
-/*   Updated: 2024/03/15 20:59:28 by amayorga         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:53:03 by amayorga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	ft_atoi(const char *str)
 	int	s;
 	int	val;
 
-	if(!str)
-		return(0);
+	if (!str)
+		return (0);
 	s = 1;
 	val = 0;
 	while (*str == ' ' || *str == '\n' || *str == '\t' || *str == '\f'

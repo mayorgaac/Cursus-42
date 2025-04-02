@@ -6,7 +6,7 @@
 /*   By: amayorga <amayorga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 21:03:01 by amayorga          #+#    #+#             */
-/*   Updated: 2025/03/18 19:34:02 by amayorga         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:53:18 by amayorga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_strdup(const char *str)
 	int		i;
 	char	*dest;
 
-	if(!str)
+	if (!str)
 		return (NULL);
 	dest = (char *) malloc (sizeof(char) * (ft_strlen(str) + 1));
 	i = 0;

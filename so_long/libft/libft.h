@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amayorga <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amayorga <amayorga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 22:55:58 by amayorga          #+#    #+#             */
-/*   Updated: 2024/03/15 22:56:03 by amayorga         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:52:46 by amayorga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 						void (*del)(void *));
 
 //GET_NEXT_LINE
-char	*ft_free(char *res, char *buffer);
-char	*ft_next(char *buffer);
-char	*read_line(char *res);
-char	*read_file(int fd, char *res);
-char	*get_next_line(int fd);
+char				*ft_free(char *res, char *buffer);
+char				*ft_next(char *buffer);
+char				*read_line(char *res);
+char				*read_file(int fd, char *res);
+char				*get_next_line(int fd);
 
 #endif

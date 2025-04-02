@@ -1,110 +1,101 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   game_control.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amayorga <amayorga@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/31 18:59:00 by amayorga          #+#    #+#             */
+/*   Updated: 2025/03/31 19:37:26 by amayorga         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../so_long.h"
 
-int handle_key(int key, t_game *game)
+int	handle_key(int key, t_game *game)
 {
-  if(key == 65307) // Tecla ESC para salir
-    return (exit_game(game));
-  else if (key == 119 || key == 65362) // 'W' → Mover arriba
-    move_player(game, 0, -1, 'u');
-  else if (key == 115 || key == 65364) // 'S' → Mover abajo
-    move_player(game, 0, 1, 'd');
-  else if (key == 97 || key == 65361) // 'A' → Mover izquierda
-    move_player(game, -1, 0, 'l');
-  else if (key == 100 || key == 65363)  // 'D' → Mover derecha
-    move_player(game, 1, 0, 'r');
-  return (0);
+	if (key == 65307)
+		return (exit_game(game));
+	else if (key == 119 || key == 65362)
+		move_player(game, 0, -1, 'u');
+	else if (key == 115 || key == 65364)
+		move_player(game, 0, 1, 'd');
+	else if (key == 97 || key == 65361)
+		move_player(game, -1, 0, 'l');
+	else if (key == 100 || key == 65363)
+		move_player(game, 1, 0, 'r');
+	return (0);
 }
 
-int exit_game(t_game *game)
+void	destroy_images(t_game *game)
 {
-  if(game->map_file)
-    free_map(game->map_file);
-  if(game->img_player_up)
-    mlx_destroy_image(game->mlx, game->img_player_up);
-  if(game->img_player_down)
-    mlx_destroy_image(game->mlx, game->img_player_down);
-  if(game->img_player_right)
-    mlx_destroy_image(game->mlx, game->img_player_right);
-  if(game->img_player_left)
-    mlx_destroy_image(game->mlx, game->img_player_left);
-  if (game->img_wall)
-    mlx_destroy_image(game->mlx, game->img_wall);
-  if (game->img_floor)
-    mlx_destroy_image(game->mlx, game->img_floor);
-  if (game->img_collect)
-    mlx_destroy_image(game->mlx, game->img_collect);
-  if (game->img_exit)
-    mlx_destroy_image(game->mlx, game->img_exit);
-  if (game->win)
-    mlx_destroy_window(game->mlx, game->win);
-  if (game->mlx)
-  {
-    mlx_destroy_display(game->mlx);
-    free(game->mlx);
-  }
-  free(game);
-  exit(0);
+	int		i;
+	void	*images[8];
+
+	if (!game)
+		return ;
+	images[0] = game->img_player_up;
+	images[1] = game->img_player_down;
+	images[2] = game->img_player_right;
+	images[3] = game->img_player_left;
+	images[4] = game->img_wall;
+	images[5] = game->img_floor;
+	images[6] = game->img_collect;
+	images[7] = game->img_exit;
+	i = 0;
+	while (i < 8)
+	{
+		if (images[i])
+			mlx_destroy_image(game->mlx, images[i]);
+		i++;
+	}
 }
 
-void setup_hooks(t_game *game)
+int	exit_game(t_game *game)
 {
-  mlx_key_hook(game->win, handle_key, game);
-  mlx_hook(game->win, 17, 0, exit_game, game);
+	if (!game)
+		return (0);
+	if (game->map_file)
+		free_map(game->map_file);
+	destroy_images(game);
+	if (game->win)
+		mlx_destroy_window(game->mlx, game->win);
+	if (game->mlx)
+	{
+		mlx_destroy_display(game->mlx);
+		free(game->mlx);
+	}
+	free(game);
+	exit(0);
 }
 
-void move_player(t_game *game, int dx, int dy, char move)
+void	setup_hooks(t_game *game)
 {
-  int new_x;
-  int new_y;
-  
-  new_x = game->player_x + dx;
-  new_y = game->player_y + dy;
-  if(game->map_file[new_y][new_x] == '1' || new_x < 0 || new_x >= game->width || new_y < 0 || new_y >= game->height)
-    return;
-  if(game->map_file[new_y][new_x] == 'C')
-    game->colleccionables--;
-  if(game->map_file[new_y][new_x] == 'E' && game->colleccionables == 0)
-    exit_game(game);
-  else if(game->map_file[new_y][new_x] == 'E' && game->colleccionables > 0)
-    return;
-  game->map_file[game->player_y][game->player_x] = '0';
-  game->map_file[new_y][new_x] = 'P';
-  game->player_x = new_x;
-  game->player_y = new_y;
-  render_map(game, move);
+	mlx_key_hook(game->win, handle_key, game);
+	mlx_hook(game->win, 17, 0, exit_game, game);
 }
 
-void render_map(t_game *game, char move)
+void	move_player(t_game *game, int dx, int dy, char move)
 {
-    int x;
-    int y;
+	int	new_x;
+	int	new_y;
 
-    mlx_clear_window(game->mlx, game->win);
-    y = 0;
-    while (game->map_file[y])
-    {
-        x = 0;
-        while (game->map_file[y][x])
-        {
-            if (game->map_file[y][x] == '1')
-                mlx_put_image_to_window(game->mlx, game->win, game->img_wall, x*game->img_width, y * game->img_height);
-            else if (game->map_file[y][x] == '0')
-                mlx_put_image_to_window(game->mlx, game->win, game->img_floor, x*game->img_width, y * game->img_height);
-            else if (game->map_file[y][x] == 'P' && move == 'u')
-                mlx_put_image_to_window(game->mlx, game->win, game->img_player_up, x*game->img_width, y * game->img_height);
-            else if (game->map_file[y][x] == 'P' && move == 'd')
-                mlx_put_image_to_window(game->mlx, game->win, game->img_player_down, x*game->img_width, y * game->img_height);
-            else if (game->map_file[y][x] == 'P' && move == 'r')
-                mlx_put_image_to_window(game->mlx, game->win, game->img_player_right, x*game->img_width, y * game->img_height);
-            else if (game->map_file[y][x] == 'P' && move == 'l')
-                mlx_put_image_to_window(game->mlx, game->win, game->img_player_left, x*game->img_width, y * game->img_height);
-            else if (game->map_file[y][x] == 'C')
-                mlx_put_image_to_window(game->mlx, game->win, game->img_collect, x*game->img_width, y * game->img_height);
-            else if (game->map_file[y][x] == 'E')
-                mlx_put_image_to_window(game->mlx, game->win, game->img_exit, x*game->img_width, y * game->img_height);
-            x++;
-        }
-        y++;
-    }
-
+	new_x = game->player_x + dx;
+	new_y = game->player_y + dy;
+	if (game->map_file[new_y][new_x] == '1' || new_x < 0
+		|| new_x >= game->width || new_y < 0 || new_y >= game->height)
+		return ;
+	if (game->map_file[new_y][new_x] == 'C')
+		game->colleccionables--;
+	if (game->map_file[new_y][new_x] == 'E' && game->colleccionables == 0)
+		exit_game(game);
+	else if (game->map_file[new_y][new_x] == 'E' && game->colleccionables > 0)
+		return ;
+	game->map_file[game->player_y][game->player_x] = '0';
+	game->map_file[new_y][new_x] = 'P';
+	game->player_x = new_x;
+	game->player_y = new_y;
+	game->total_moves++;
+	ft_printf("Total de movimientos: %d\n", game->total_moves);
+	render_map(game, move);
 }

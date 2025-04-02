@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: amayorga <amayorga@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/03/31 20:22:16 by amayorga          #+#    #+#              #
+#    Updated: 2025/03/31 20:30:34 by amayorga         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = so_long
 
 RM = rm -rf
@@ -22,6 +34,8 @@ LIBFT_LIB = ${LIBFT_DIR}/libft.a
 
 PRINTF_DIR = libft/printf
 PRINTF_LIB = ${PRINTF_DIR}/printf.a
+
+MAPS = $(wildcard ./maps/maps_err/*.ber)
 
 all:$(MLX_LIB) $(NAME)
 
@@ -52,5 +66,11 @@ fclean: clean
 		@make -C $(MLX_DIR) clean
 
 re: fclean all
+
+test_maps: $(MAPS)
+	@for map in $^; do \
+		echo "Probando mapa $$map"; \
+		./$(NAME) $$map; \
+	done
 
 .PHONY = re fclean clean all

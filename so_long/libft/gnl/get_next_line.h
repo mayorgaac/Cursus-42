@@ -6,7 +6,7 @@
 /*   By: amayorga <amayorga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:51:34 by amayorga          #+#    #+#             */
-/*   Updated: 2024/10/08 20:38:49 by amayorga         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:54:05 by amayorga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 //# include <unistd.h>
 //# include <stdlib.h>
-#include "../libft.h"
+# include "../libft.h"
 
 # define BUFFER_SIZE 1024
 

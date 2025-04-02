@@ -6,7 +6,7 @@
 /*   By: amayorga <amayorga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 20:29:52 by amayorga          #+#    #+#             */
-/*   Updated: 2025/03/25 20:31:49 by amayorga         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:37:02 by amayorga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,17 @@ char	**copy_map(char **map, int height)
 	}
 	map_copy[i] = NULL;
 	return (map_copy);
+}
+
+int	is_valid_character(char c)
+{
+	return (c == '0' || c == '1' || c == 'C' || c == 'E' || c == 'P');
+}
+
+void	count_elements(char c, int *count1, int *count2)
+{
+	if (c == 'E' || c == 'P')
+		(*count1)++;
+	else if (c == 'C')
+		(*count2)++;
 }
