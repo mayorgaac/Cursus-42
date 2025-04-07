@@ -1,40 +1,55 @@
 NAME := minishell
 
-RM = rm -rf
+CC = clang
+CFLAGS = -Wall -Wextra -Werror -I includes/ -I libft/includes/
 
-CC = gcc
-FLAGS = -Wall -Werror -Wextra -g 
+LIBFT = -L libft -lft
 
-SRC_DIR = src
-SRC =  $(wildcard ${SRC_DIR}/*.c)
+HEADER = minishell.h
 
-OBJ_DIR = obj
-OBJ = $(SRC:${SRC_DIR}/%.c=${OBJ_DIR}/%.o)
+#Ir añadiendo los nombres de archivos por carpetas sin el .c
+MAIN = minishell
+
+#Ir añadiendo el sufijo .c y el prefijo de la ruta de la carpeta
+SRC = $(addsuffix .c, $(addprefix src/main/, $(MAIN))) 
+
+OBJ = $(SRC:c=o)
 
 INCLUDE = includes/minishell.h
 
-#Incluir LIBFT
 LIBFT_DIR = libft
 LIBFT_LIB = ${LIBFT_DIR}/libft.a
 
 all: $(NAME)
 
-$(NAME): ${OBJ}
-	@${MAKE} -C ${LIBFT_DIR}
-	@${CC} ${FLAGS} ${OBJ} ${LIBFT_LIB} -o ${NAME}
+$(NAME): $(OBJ)
+	@echo "\n"
+	@make -C libft/
+	@echo "\033[0;32mCompiling minishell..."
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT)
+	@echo "\n\033[0mDone !"
 
-$(OBG_DIR)/%.o: ${SRC_DIR}/%.c | $(OBG_DIR)
-	$(CC) $(FLAGS) -c -o $@ $<
+
+%.o: %.c
+	@printf "\033[0;33mGenerating libft objects... %-33.33s\r" $@
+	@${CC} ${CFLAGS} -c $< -o $@
 
 clean:
-	make clean -C $(LIBFT_DIR)
-	rm -rf $(OBJ_DIR)
-	@printf "\e[38;5;46m💥 .o files deleted\e[0m\n"
+	@echo "\033[0;31mCleaning libft..."
+	@make clean -C libft/
+	@echo "\nRemoving binaries..."
+	@rm -f $(OBJ)
+	@echo "\033[0m"
 
-fclean: clean
-	rm -f $(NAME)
-	@printf "\e[38;5;226m🧹 Binaries and .o deleted\e[0m\n"
+fclean:
+	@echo "\033[0;31mCleaning libft..."
+	@make fclean -C libft/
+	@echo "\nDeleting objects..."
+	@rm -f $(OBJ)
+	@echo "\nDeleting executable..."
+	@rm -f $(NAME)
+	@echo "\033[0m"
 
-re:	fclean all
+re: fclean all
 
 .PHONY: all fclean clean re
